@@ -1,0 +1,6 @@
+include CHANGELOG.rst
+include LICENSE.txt
+include README.rst
+include requirements/base.in
+include requirements/constraints.txt
+recursive-include imscc_exporter_ext *.html *.png *.gif *.js *.css *.jpg *.jpeg *.svg
