@@ -1,7 +1,7 @@
 [run]
 branch = True
 data_file = .coverage
-source=imscc_exporter_ext
+source=openedx_imscc_exporter_ext
 omit =
     test_settings.py
     */migrations/*

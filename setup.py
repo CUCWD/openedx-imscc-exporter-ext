@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Package metadata for imscc_exporter_ext.
+Package metadata for openedx_imscc_exporter_ext.
 """
 import os
 import re
@@ -117,7 +117,7 @@ def is_requirement(line):
     return line and line.strip() and not line.startswith(("-r", "#", "-e", "git+", "-c"))
 
 
-VERSION = get_version('imscc_exporter_ext', '__init__.py')
+VERSION = get_version('openedx_imscc_exporter_ext', '__init__.py')
 
 if sys.argv[-1] == 'tag':
     print("Tagging the version on github:")
@@ -137,7 +137,7 @@ setup(
     author_email='ztraboo@clemson.edu',
     url='https://github.com/CUCWD/openedx-imscc-exporter-ext',
     packages=find_packages(
-        include=['imscc_exporter_ext', 'imscc_exporter_ext.*'],
+        include=['openedx_imscc_exporter_ext', 'openedx_imscc_exporter_ext.*'],
         exclude=["*tests"],
     ),
 

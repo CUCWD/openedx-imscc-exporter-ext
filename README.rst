@@ -1,21 +1,26 @@
 openedx-imscc-exporter-ext
 ##########################
 
+.. note::
+
+  This README was auto-generated. Maintainer: please review its contents and
+  update all relevant sections. Instructions to you are marked with
+  "PLACEHOLDER" or "TODO". Update or remove those sections, and remove this
+  note when you are done.
+
 |pypi-badge| |ci-badge| |codecov-badge| |doc-badge| |pyversions-badge|
 |license-badge| |status-badge|
 
 Purpose
 *******
 
-Allows for running a Django management command to export multiple Open edX courses to Common Cartridge 1.x package which can be imported into external LMS systems (e.g. Blackboard, Canvas, D2L, Moodle). The course is comprised of several LTI Consumer links which point to the Open edX instance as the LTI Provider.
+Common Cartridge 1.x package exporter for multiple courses using Learning Tools Interoperability (LTI) Consumer links for loading Open edX course content.
 
-```
-manage.py export_imscc [--output example_combined.imscc] [--external-tool-only] course_id [course_id ...]
-
---external-tool-only: Export only LTI Consumer links, excluding assignments. Typically used with D2L since it does not support IMS LTI Assignments.
-
-- course_id: One or more Open edX course IDs to export, e.g. "course-v1:edX+DemoX+Demo_Course". 
-```
+TODO: The ``README.rst`` file should start with a brief description of the repository and its purpose.
+It should be described in the context of other repositories under the ``openedx``
+organization. It should make clear where this fits into the overall Open edX
+codebase and should be oriented towards people who are new to the Open edX
+project.
 
 Getting Started with Development
 ********************************
@@ -27,7 +32,8 @@ Please see the Open edX documentation for `guidance on Python development`_ in t
 Deploying
 *********
 
-This package is intended to be deployed as an Open edX platform extension using `OPENEDX_EXTRA_PIP_REQUIREMENTS` with tutor or other Open edX distribution mechanisms.
+TODO: How can a new user go about deploying this component? Is it just a few
+commands? Is there a larger how-to that should be linked here?
 
 PLACEHOLDER: For details on how to deploy this component, see the `deployment how-to`_.
 

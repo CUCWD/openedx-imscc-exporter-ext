@@ -1,3 +1,3 @@
 """
-Database models for imscc_exporter_ext.
+Database models for openedx_imscc_exporter_ext.
 """
