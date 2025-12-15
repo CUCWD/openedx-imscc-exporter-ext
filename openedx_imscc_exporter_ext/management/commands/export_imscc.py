@@ -22,7 +22,7 @@ from path import Path as path
 
 from xmodule.modulestore.django import modulestore
 # from xmodule.modulestore.imscc_exporter import export_course_to_imscc
-from imscc_exporter_ext.exporter import export_course_to_imscc
+from openedx_imscc_exporter_ext.exporter import export_course_to_imscc
 
 class Command(BaseCommand):
     """
