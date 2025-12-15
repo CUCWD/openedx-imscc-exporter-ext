@@ -32,14 +32,14 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'imscc_exporter_ext',
+    'openedx_imscc_exporter_ext',
 )
 
 LOCALE_PATHS = [
-    root('imscc_exporter_ext', 'conf', 'locale'),
+    root('openedx_imscc_exporter_ext', 'conf', 'locale'),
 ]
 
-ROOT_URLCONF = 'imscc_exporter_ext.urls'
+ROOT_URLCONF = 'openedx_imscc_exporter_ext.urls'
 
 SECRET_KEY = 'insecure-secret-key'
 

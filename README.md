@@ -1,1 +1,0 @@
-# openedx-imscc-exporter-ext

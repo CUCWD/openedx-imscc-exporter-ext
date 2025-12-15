@@ -57,8 +57,8 @@ output/*/index.html
 # Sphinx
 docs/_build
 docs/modules.rst
-docs/imscc_exporter_ext.rst
-docs/imscc_exporter_ext.*.rst
+docs/openedx_imscc_exporter_ext.rst
+docs/openedx_imscc_exporter_ext.*.rst
 
 # Private requirements
 requirements/private.in

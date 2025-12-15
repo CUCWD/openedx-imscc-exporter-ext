@@ -39,7 +39,7 @@ def get_version(*file_paths):
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(REPO_ROOT)
 
-VERSION = get_version('../imscc_exporter_ext', '__init__.py')
+VERSION = get_version('../openedx_imscc_exporter_ext', '__init__.py')
 # Configure Django for autodoc usage
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_settings'
 django_setup()
@@ -517,7 +517,7 @@ epub_exclude_files = ['search.html']
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.12', None),
+    'python': ('https://docs.python.org/3.11.8', None),
     'django': ('https://docs.djangoproject.com/en/4.2/', 'https://docs.djangoproject.com/en/3.2/_objects/'),
     'model_utils': ('https://django-model-utils.readthedocs.io/en/latest/', None),
 }
@@ -537,8 +537,8 @@ def on_init(app):  # pylint: disable=unused-argument
         # If we are, assemble the path manually
         bin_path = os.path.abspath(os.path.join(sys.prefix, 'bin'))
         apidoc_path = os.path.join(bin_path, apidoc_path)
-    check_call([apidoc_path, '-o', docs_path, os.path.join(root_path, 'imscc_exporter_ext'),
-                os.path.join(root_path, 'imscc_exporter_ext/migrations')])
+    check_call([apidoc_path, '-o', docs_path, os.path.join(root_path, 'openedx_imscc_exporter_ext'),
+                os.path.join(root_path, 'openedx_imscc_exporter_ext/migrations')])
 
 
 def setup(app):
