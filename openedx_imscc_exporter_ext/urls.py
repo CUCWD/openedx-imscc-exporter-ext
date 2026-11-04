@@ -1,6 +1,7 @@
 """
 URLs for openedx_imscc_exporter_ext.
 """
+
 from django.urls import re_path  # pylint: disable=unused-import
 from django.views.generic import TemplateView  # pylint: disable=unused-import
 

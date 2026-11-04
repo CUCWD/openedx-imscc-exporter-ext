@@ -69,6 +69,10 @@ extensions = [
     'sphinx.ext.napoleon'
 ]
 
+# These modules belong to edx-platform and are unavailable in standalone docs
+# builds. Mock only platform imports; document the real exporter implementation.
+autodoc_mock_imports = ['lms', 'xmodule']
+
 # A list of warning types to suppress arbitrary warning messages.
 suppress_warnings = [
     'image.nonlocal_uri',
@@ -517,8 +521,8 @@ epub_exclude_files = ['search.html']
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.11.8', None),
-    'django': ('https://docs.djangoproject.com/en/4.2/', 'https://docs.djangoproject.com/en/3.2/_objects/'),
+    'python': ('https://docs.python.org/3.11/', None),
+    'django': ('https://docs.djangoproject.com/en/5.2/', 'https://docs.djangoproject.com/en/5.2/objects.inv'),
     'model_utils': ('https://django-model-utils.readthedocs.io/en/latest/', None),
 }
 

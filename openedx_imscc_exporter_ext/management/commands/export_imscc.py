@@ -1,5 +1,6 @@
 """
-A Django command that exports a course to a tar.gz file using IMSCC protocol
+A Django command that exports a course to a tar.gz file using IMSCC protocol.
+
 
 At present, it differs from Studio exports in several ways:
 
@@ -10,33 +11,37 @@ At present, it differs from Studio exports in several ways:
 import os
 import re
 import shutil
-import tarfile
+from datetime import datetime
 from tempfile import mkdtemp, mktemp
 from textwrap import dedent
 
-from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
 from opaque_keys import InvalidKeyError
 from opaque_keys.edx.keys import CourseKey
 from path import Path as path
-
+# Provided by the host edx-platform, absent from standalone lint environments.
+# pylint: disable-next=import-error
 from xmodule.modulestore.django import modulestore
+
 # from xmodule.modulestore.imscc_exporter import export_course_to_imscc
 from openedx_imscc_exporter_ext.exporter import export_course_to_imscc
+
 
 class Command(BaseCommand):
     """
     Export a course to IMSCC. The output is compressed as a tar.gz file.
     """
+
     help = dedent(__doc__).strip()
 
     def add_arguments(self, parser):
-        parser.add_argument('course_id',  nargs="+") #nargs = "+" allows parsing of unlimited course ids
+        parser.add_argument('course_id', nargs="+")  # nargs = "+" allows parsing of unlimited course ids
         parser.add_argument('--output')
         parser.add_argument(
             '--external-tool-only',
-            action = 'store_true',
-            help = 'Export Common Cartridge file using only external tools and no assignment types (e.g. D2L)')
+            action='store_true',
+            help='Export Common Cartridge file using only external tools and no assignment types (e.g. D2L)',
+        )
 
     def handle(self, *args, **options):
         external_tool_only = options.get('external_tool_only', False)
@@ -52,7 +57,11 @@ class Command(BaseCommand):
             except IndexError:
                 raise CommandError("Insufficient arguments")  # lint-amnesty, pylint: disable=raise-missing-from
 
-        filename = options['output'] + f"{'-external-tool-only' if external_tool_only else ''}-{datetime.now():%Y%m%d-%H%M%S}"
+        filename = (
+            options['output']
+            + ('-external-tool-only' if external_tool_only else '')
+            + datetime.now().strftime('-%Y%m%d-%H%M%S')
+        )
         pipe_results = False
 
         if filename is None:
@@ -70,6 +79,7 @@ class Command(BaseCommand):
         """
         Load results from file.
 
+
         Returns:
             bytes: bytestring of file contents.
         """
@@ -80,7 +90,9 @@ class Command(BaseCommand):
 
 
 def export_course_to_tarfile(course_keys, filename, external_tool_only):
-    """Exports a course into a tar.gz file"""
+    """
+    Export a course into a tar.gz file.
+    """
     tmp_dir = mkdtemp()
     try:
         course_dir = export_course_to_directory(course_keys, tmp_dir, external_tool_only)
@@ -90,7 +102,9 @@ def export_course_to_tarfile(course_keys, filename, external_tool_only):
 
 
 def export_course_to_directory(course_keys, root_dir, external_tool_only):
-    """Export course into a directory"""
+    """
+    Export course into a directory.
+    """
     # attempt to get all the courses based on the course_keys
     store = modulestore()
     courses = []
@@ -119,7 +133,9 @@ def export_course_to_directory(course_keys, root_dir, external_tool_only):
 
 
 def compress_directory(directory, filename):
-    """Compress a directory into a zip file with .imscc extension"""
+    """
+    Compress a directory into a zip file with .imscc extension.
+    """
     shutil.make_archive(filename, 'zip', directory)
     # Rename the .zip file to .imscc
     os.rename(f"{filename}.zip", f"{filename}.imscc")

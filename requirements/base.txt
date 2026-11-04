@@ -1,0 +1,2 @@
+# Runtime dependencies remain unpinned; install into a provisioned edx-platform.
+-r base.in

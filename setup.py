@@ -19,8 +19,7 @@ def get_version(*file_paths):
     """
     filename = os.path.join(os.path.dirname(__file__), *file_paths)
     version_file = open(filename, encoding="utf8").read()
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
-                              version_file, re.M)
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
     if version_match:
         return version_match.group(1)
     raise RuntimeError('Unable to find version string.')
@@ -63,8 +62,7 @@ def load_requirements(*requirements_paths):
     re_package_name_base_chars = r"a-zA-Z0-9\-_."  # chars allowed in base package name
     # Two groups: name[maybe,extras], and optionally a constraint
     requirement_line_regex = re.compile(
-        r"([%s]+(?:\[[%s,\s]+\])?)([<>=][^#\s]+)?"
-        % (re_package_name_base_chars, re_package_name_base_chars)
+        r"([%s]+(?:\[[%s,\s]+\])?)([<>=][^#\s]+)?" % (re_package_name_base_chars, re_package_name_base_chars)
     )
 
     def add_version_constraint_or_raise(current_line, current_requirements, add_if_not_present):
@@ -77,10 +75,12 @@ def load_requirements(*requirements_paths):
             # It's fine to add constraints to an unconstrained package,
             # but raise an error if there are already constraints in place.
             if existing_version_constraints and existing_version_constraints != version_constraints:
-                raise BaseException(f'Multiple constraint definitions found for {package}:'
-                                    f' "{existing_version_constraints}" and "{version_constraints}".'
-                                    f'Combine constraints into one location with {package}'
-                                    f'{existing_version_constraints},{version_constraints}.')
+                raise BaseException(
+                    'Multiple constraint definitions found for {package}: "{existing}" and "{new}".'
+                    'Combine constraints into one location with {package}{existing},{new}.'.format(
+                        package=package, existing=existing_version_constraints, new=version_constraints,
+                    )
+                )
             if add_if_not_present or package in current_requirements:
                 current_requirements[package] = version_constraints
 
@@ -126,13 +126,20 @@ if sys.argv[-1] == 'tag':
     sys.exit()
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst'), encoding="utf8").read()
-CHANGELOG = open(os.path.join(os.path.dirname(__file__), 'CHANGELOG.rst'), encoding="utf8").read()
+CHANGELOG = open(
+    os.path.join(os.path.dirname(__file__), 'CHANGELOG.rst'),
+    encoding="utf8",
+).read()
 
 setup(
     name='openedx-imscc-exporter-ext',
     version=VERSION,
-    description="""Common Cartridge 1.x package exporter for multiple courses using Learning Tools Interoperability (LTI) Consumer links for loading Open edX course content.""",
+    description=(
+        "Common Cartridge 1.x package exporter for multiple courses using "
+        "Learning Tools Interoperability (LTI) Consumer links for loading Open edX course content."
+    ),
     long_description=README + '\n\n' + CHANGELOG,
+    long_description_content_type='text/x-rst',
     author='Zachary Trabookis',
     author_email='ztraboo@clemson.edu',
     url='https://github.com/CUCWD/openedx-imscc-exporter-ext',
@@ -140,7 +147,6 @@ setup(
         include=['openedx_imscc_exporter_ext', 'openedx_imscc_exporter_ext.*'],
         exclude=["*tests"],
     ),
-
     include_package_data=True,
     install_requires=load_requirements('requirements/base.in'),
     python_requires=">=3.11.8",

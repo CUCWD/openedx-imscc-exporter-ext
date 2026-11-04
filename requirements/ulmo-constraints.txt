@@ -1,0 +1,277 @@
+# Ulmo standalone tooling constraints, platform commit
+# 46c543590c78aa1bfa846d47a4f1c5c6ec388490.
+# Refresh with the target platform; never include in runtime package metadata.
+
+# ---- openedx-platform/requirements/common_constraints.txt ----
+# This is a temporary solution to override the real common_constraints.txt
+# In edx-lint, until the pyjwt constraint in edx-lint has been removed.
+# See BOM-2721 for more details.
+# Below is the copied and edited version of common_constraints
+# A central location for most common version constraints
+# (across edx repos) for pip-installation.
+#
+# Similar to other constraint files this file doesn't install any packages.
+# It specifies version constraints that will be applied if a package is needed.
+# When pinning something here, please provide an explanation of why it is a good
+# idea to pin this package across all edx repos, Ideally, link to other information
+# that will help people in the future to remove the pin when possible.
+# Writing an issue against the offending project and linking to it here is good.
+#
+# Note: Changes to this file will automatically be used by other repos, referencing
+#  this file from Github directly. It does not require packaging in edx-lint.
+
+# using LTS django version
+Django<6.0
+
+# elasticsearch>=7.14.0 includes breaking changes in it which caused issues in discovery upgrade process.
+# elastic search changelog: https://www.elastic.co/guide/en/enterprise-search/master/release-notes-7.14.0.html
+# See https://github.com/openedx/edx-platform/issues/35126 for more info
+elasticsearch<7.14.0
+
+# pip 25.3 is incompatible with pip-tools hence causing failures during the build process
+# Make upgrade command and all requirements upgrade jobs are broken due to this.
+# See issue https://github.com/openedx/public-engineering/issues/440 for details regarding the ongoing fix.
+# The constraint can be removed once a release (pip-tools > 7.5.1) is available with support for pip 25.3
+# Issue to track this dependency and unpin later on: https://github.com/openedx/edx-lint/issues/503
+pip<25.3
+
+# ---- openedx-platform/requirements/constraints.txt ----
+# Version constraints for pip-installation.
+#
+# This file doesn't install any packages. It specifies version constraints
+# that will be applied if a package is needed.
+#
+# When pinning something here, please provide an explanation of why.  Ideally,
+# link to other information that will help people in the future to remove the
+# pin when possible.  Writing an issue against the offending project and
+# linking to it here is good.
+# For further details on how to properly write constraints here please consult
+# https://openedx.atlassian.net/wiki/spaces/COMM/pages/4400250883/Adding+pinned+dependencies+in+constraint+file
+
+# This file contains all common constraints for edx-repos
+
+# Date: 2025-10-07
+# Stay on LTS version, remove once this is added to common constraint
+Django<6.0
+
+# Date: 2020-02-26
+# As it is not clarified what exact breaking changes will be introduced as per
+# the next major release, ensure the installed version is within boundaries.
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35280
+celery>=5.2.2,<6.0.0
+
+# Date: 2020-02-10
+# django-oauth-toolkit version >=2.0.0 has breaking changes. More details
+# mentioned on this issue https://github.com/openedx/edx-platform/issues/32884
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35277
+django-oauth-toolkit==1.7.1
+
+# Date: 2024-07-19
+# Generally speaking, the major version of django-stubs must either match the major version
+# of django, or exceed it by 1. So, we will need to perpetually constrain django-stubs and
+# update it as we perform django upgrades. For more details, see:
+# https://github.com/typeddjango/django-stubs?tab=readme-ov-file#version-compatibility
+# including the note on "Partial Support".
+# Issue: https://github.com/openedx/edx-platform/issues/35275
+django-stubs<6
+
+# Date: 2019-08-16
+# The team that owns this package will manually bump this package rather than having it pulled in automatically.
+# This is to allow them to better control its deployment and to do it in a process that works better
+# for them.
+edx-enterprise==6.5.1
+
+# Date: 2023-07-26
+# Our legacy Sass code is incompatible with anything except this ancient libsass version.
+# Here is a ticket to upgrade, but it's of debatable importance given that we are rapidly moving
+# away from legacy LMS/CMS frontends:
+# https://github.com/openedx/edx-platform/issues/31616
+libsass==0.10.0
+
+# Date: 2024-07-16
+# We need to upgrade the version of elasticsearch to atleast 7.15 before we can upgrade to Numpy 2.0.0
+# Otherwise we see a failure while running the following command:
+# export DJANGO_SETTINGS_MODULE=cms.envs.test; python manage.py cms check_reserved_keywords --override_file db_keyword_overrides.yml --report_path reports/reserved_keywords --report_file cms_reserved_keyword_report.csv
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35126
+numpy<2.0.0
+
+# Date: 2023-09-18
+# pinning this version to avoid updates while the library is being developed
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35269
+openedx-learning==0.30.2
+
+# Date: 2023-11-29
+# Open AI version 1.0.0 dropped support for openai.ChatCompletion which is currently in use in enterprise.
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35268
+openai<=0.28.1
+
+# Date: 2026-06-04
+# Cap openedx-forum to 0.4.1 on the Ulmo release line:
+#   * 0.4.1 contains the fix for the "pinned" NULL sort bug
+#     (https://github.com/openedx/forum/pull/270 — discussion threads were not
+#     ordering correctly when sorted by "recent first"). See user report:
+#     https://discuss.openedx.org/t/discuss-forum-messages-order-not-organized-as-expected-in-teak/18665
+#   * 0.4.2 drops Python 3.11 support.
+#   * 0.4.3 removes the MongoDB backend, which Ulmo deployments may still rely on.
+# Remove this cap on master / post-Ulmo release lines.
+openedx-forum<=0.4.1
+
+# Date: 2024-04-26
+# path==16.12.0 breaks the unit test collections check
+# needs to be investigated and fixed separately
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35267
+path<16.12.0
+
+# Date: 2022-08-03
+# pycodestyle==2.9.0 generates false positive error E275.
+# Constraint can be removed once the issue https://github.com/PyCQA/pycodestyle/issues/1090 is fixed.
+pycodestyle<2.9.0
+
+# Date: 2021-08-25
+# At the time of writing this comment, we do not know whether py2neo>=2022
+# will support our currently-deployed Neo4j version (3.5).
+# Feel free to loosen this constraint if/when it is confirmed that a later
+# version of py2neo will work with Neo4j 3.5.
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35266
+py2neo<2022
+
+# Date: 2020-04-08
+# Adding pin to avoid any major upgrade
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35265
+pymongo<4.4.1
+
+# Date: 2024-08-06
+# social-auth-app-django 5.4.2 introduces a new migration that will not play nicely with large installations. This will touch
+# user tables, which are quite large, especially on instances like edx.org.
+# We are pinning this until after all the smaller migrations get handled and then we can migrate this all at once.
+# Issue for unpinning: https://github.com/edx/edx-arch-experiments/issues/760
+social-auth-app-django<=5.4.1
+
+# # Date: 2024-10-14
+# # The edx-enterprise is currently using edx-rest-api-client==5.7.1, which needs to be updated first.
+# edx-rest-api-client==5.7.1
+
+# Date 2025-01-08
+# elasticsearch==7.13.x is downgrading urllib3 from 2.2.3 to 1.26.20
+# https://github.com/elastic/elasticsearch-py/blob/v7.13.4/setup.py#L42
+# We are pinning this until we can upgrade to a version of elasticsearch that uses a more recent version of urllib3.
+# Issue for unpinning: https://github.com/openedx/edx-platform/issues/35126
+elasticsearch==7.9.1
+
+# Date 2025-05-09
+# lxml and xmlsec need to be constrained because the latest version builds against a newer
+# version of libxml2 than what we're running with.  This leads to a version mismatch error
+# at runtime.  You can re-produce it by running any test.
+# If lxml is pinned in the future and you see this error, it may be that the system libxml2
+# is now shipping the correct version and we can un-pin this.
+# Issue: https://github.com/openedx/edx-platform/issues/36695
+lxml==5.3.2
+xmlsec==1.3.14
+
+# Date 2025-08-12
+# The newest version of the debug toolbar has a bug in it
+# https://github.com/django-commons/django-debug-toolbar/issues/2172
+# Pin this back to the previous version until that bug is fixed.
+django-debug-toolbar<6.0.0
+
+# Date 2025-10-07
+# Cryptography 46.0.0 conflicts with system dependencies needed for snowflake-connector-python
+# snowflake-connector-python comes as a dependency of edx-enterprise so it can not be directly pinned here.
+# See issue https://github.com/openedx/edx-platform/issues/37417 for details on this.
+# This can be unpinned once snowflake-connector-python==4.0.0 is available (contains the fix).
+# pact-python==3.0.0 also removes cffi dependency and is causing the upgrade build to fail
+# This should also be removed together with cryptography constraint.
+# Issue: https://github.com/openedx/edx-platform/issues/37435
+cryptography<46.0.0
+pact-python<3.0.0
+
+# Resolved pins from requirements/edx/{base,testing,development,doc}.txt
+# and requirements/{pip,pip-tools}.txt; runtime and installer pins take precedence.
+accessible-pygments==0.0.5
+alabaster==1.0.0
+appdirs==1.4.4
+asgiref==3.10.0
+astroid==3.3.11
+babel==2.17.0
+beautifulsoup4==4.14.2
+build==1.3.0
+cachetools==6.2.1
+certifi==2025.10.5
+cffi==2.0.0
+chardet==5.2.0
+charset-normalizer==3.4.4
+click==8.3.0
+click-log==0.4.0
+code-annotations==2.3.0
+colorama==0.4.6
+coverage==7.11.0
+cryptography==45.0.7
+diff-cover==9.7.1
+dill==0.4.0
+distlib==0.4.0
+django==5.2.11
+dnspython==2.8.0
+docutils==0.21.2
+edx-i18n-tools==1.9.0
+edx-lint==5.6.0
+edx-opaque-keys==3.0.0
+filelock==3.20.0
+fs==2.4.16
+idna==3.11
+imagesize==1.4.1
+iniconfig==2.3.0
+isort==6.1.0
+jinja2==3.1.6
+lxml==5.3.2
+lxml-html-clean==0.4.3
+markupsafe==3.0.3
+mccabe==0.7.0
+more-itertools==10.8.0
+nh3==0.3.1
+openedx-atlas==0.7.0
+packaging==25.0
+path==16.11.0
+pip==25.2
+pip-tools==7.5.1
+platformdirs==4.5.0
+pluggy==1.6.0
+polib==1.2.0
+pycodestyle==2.8.0
+pycparser==2.23
+pydata-sphinx-theme==0.15.4
+pygments==2.19.2
+pylint==3.3.9
+pylint-celery==0.3
+pylint-django==2.6.1
+pylint-plugin-utils==0.9.0
+pymongo==4.4.0
+pyproject-api==1.10.0
+pyproject-hooks==1.2.0
+pytest==8.2.0
+pytest-cov==7.0.0
+pytest-django==4.11.1
+python-slugify==8.0.4
+pyyaml==6.0.3
+requests==2.32.5
+roman-numerals-py==3.1.0
+setuptools==80.9.0
+six==1.17.0
+snowballstemmer==3.0.1
+soupsieve==2.8
+sphinx==8.2.3
+sphinx-book-theme==1.1.4
+sphinxcontrib-applehelp==2.0.0
+sphinxcontrib-devhelp==2.0.0
+sphinxcontrib-htmlhelp==2.1.0
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==2.0.0
+sphinxcontrib-serializinghtml==2.0.0
+sqlparse==0.5.3
+stevedore==5.5.0
+text-unidecode==1.3
+tomlkit==0.13.3
+tox==4.32.0
+typing-extensions==4.15.0
+urllib3==2.5.0
+virtualenv==20.35.4
+wheel==0.45.1

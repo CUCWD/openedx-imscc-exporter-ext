@@ -32,27 +32,21 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	tox -e docs
 	$(BROWSER)docs/_build/html/index.html
 
-# Define PIP_COMPILE_OPTS=-v to get more information during make upgrade.
-PIP_COMPILE = pip-compile $(PIP_COMPILE_OPTS)
+# Runtime base.txt remains unpinned. Compile standalone tooling with Ulmo constraints.
+PIP_COMPILE = pip-compile $(PIP_COMPILE_OPTS) $(COMPILE_OPTS) --allow-unsafe --strip-extras --no-emit-index-url --no-emit-trusted-host
+export CUSTOM_COMPILE_COMMAND = make upgrade
 
-compile-requirements: ## compile the requirements/*.txt files with the latest packages satisfying requirements/*.in
-	pip install -qr requirements/pip-tools.txt
-	pip-compile -v ${COMPILE_OPTS} --allow-unsafe --rebuild -o requirements/pip.txt requirements/pip.in
-	pip-compile -v ${COMPILE_OPTS} -o requirements/pip-tools.txt requirements/pip-tools.in
-	pip install -qr requirements/pip.txt
-	pip install -qr requirements/pip-tools.txt
-	$(PIP_COMPILE) -o requirements/base.txt requirements/base.in
+compile-requirements: ## compile standalone requirements using the Ulmo snapshot
+	pip install -qr requirements/pip.txt -r requirements/pip-tools.txt
+	$(PIP_COMPILE) -o requirements/pip.txt requirements/pip.in
+	$(PIP_COMPILE) -o requirements/pip-tools.txt requirements/pip-tools.in
 	$(PIP_COMPILE) -o requirements/test.txt requirements/test.in
 	$(PIP_COMPILE) -o requirements/doc.txt requirements/doc.in
 	$(PIP_COMPILE) -o requirements/quality.txt requirements/quality.in
 	$(PIP_COMPILE) -o requirements/ci.txt requirements/ci.in
 	$(PIP_COMPILE) -o requirements/dev.txt requirements/dev.in
-	# Let tox control the Django version for tests
-	sed '/^[dD]jango==/d' requirements/test.txt > requirements/test.tmp
-	mv requirements/test.tmp requirements/test.txt
 
-upgrade: ## update the requirements/*.txt files with the latest packages satisfying requirements/*.in
-	pip install -qr requirements/pip-tools.txt
+upgrade: ## refresh tooling locks within the Ulmo constraints
 	$(MAKE) compile-requirements COMPILE_OPTS="--upgrade"
 
 quality: ## check coding style with pycodestyle and pylint
