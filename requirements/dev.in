@@ -5,5 +5,7 @@
 -r quality.txt            # Core and quality check dependencies
 -r ci.txt                 # dependencies for setting up testing in CI
 
+openedx-atlas             # Translation tooling; not required at runtime
+
 diff-cover                # Changeset diff test coverage
 edx-i18n-tools            # For i18n_tool dummy

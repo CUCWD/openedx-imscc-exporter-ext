@@ -27,6 +27,21 @@ Getting Started with Development
 
 Please see the Open edX documentation for `guidance on Python development`_ in this repo.
 
+Install runtime dependencies into a provisioned Ulmo platform environment.
+``requirements/base.in`` and ``base.txt`` leave dependency versions to the host;
+the package metadata does not include development constraints.
+
+For standalone development, use ``requirements/dev.txt`` in a separate virtual
+environment. ``requirements/constraints.txt`` references the local
+``ulmo-constraints.txt`` snapshot of platform bounds and relevant resolved pins.
+Refresh that snapshot from the target platform before changing releases, then
+run ``make upgrade`` to regenerate tooling locks. Keep ``base.txt`` unpinned.
+
+Run ``tox -e django52`` for Ulmo's Django 5.2.11. The current test suite contains
+only a skipped placeholder; actual export validation requires edx-platform's
+``lms`` and ``xmodule`` modules and course data.
+
+
 .. _guidance on Python development: https://docs.openedx.org/en/latest/developers/how-tos/get-ready-for-python-dev.html
 
 Deploying

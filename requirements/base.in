@@ -1,7 +1,7 @@
-# Core requirements for using this application
--c constraints.txt
-
-Django             # Web application framework
-
-
-openedx-atlas
+# Runtime versions are supplied by the host edx-platform environment.
+# Keep tooling constraints out of package metadata.
+Django
+edx-opaque-keys
+fs
+lxml
+path

@@ -1,5 +1,7 @@
 """
-Common Cartridge 1.x package exporter for multiple courses using Learning Tools Interoperability (LTI) Consumer links for loading Open edX course content.
+Export Common Cartridge 1.x packages with LTI links to Open edX content.
+
+LTI stands for Learning Tools Interoperability.
 """
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
